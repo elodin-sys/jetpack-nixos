@@ -12,7 +12,9 @@ let
   nvpModelConf = {
     orin-agx = "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_p3701_0000.conf";
     orin-agx-industrial = "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_p3701_0008.conf";
-    orin-nx = "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_p3767_0000.conf";
+    orin-nx = if (cfg.sku == "0001")
+      then "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_p3767_0001.conf"
+      else "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_p3767_0000.conf";
     orin-nano = "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_p3767_0003.conf";
     xavier-agx = "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_t194.conf";
     xavier-agx-industrial = "${pkgs.nvidia-jetpack.l4t-nvpmodel}/etc/nvpmodel/nvpmodel_t194_agxi.conf";
@@ -109,7 +111,7 @@ lib.mkMerge [{
         '');
       })
 
-      (mkIf (cfg.som == "orin-nx" || cfg.som == "orin-nano") {
+      (mkIf (cfg.som == "orin-nx" || cfg.som == "orin-nx-8G" || cfg.som == "orin-nano") {
         targetBoard = mkDefault "jetson-orin-nano-devkit";
         # Use this instead if you want to use the original Xavier NX Devkit module (p3509-a02)
         #targetBoard = mkDefault "p3509-a02+p3767-0000";
